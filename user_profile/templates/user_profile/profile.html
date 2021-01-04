@@ -1,0 +1,40 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %} - マイページ {% endblock title %}
+
+{% block main %}
+
+<div class="mb-5">
+    <div class="card row">
+        <div class="col-md-12">
+            <p class="my-3 mx-5 text-right"><a href="{% url 'profile_edit' user.pk %}" class="btn btn-primary">プロフィールを編集</a></p>
+            <div class="text-center px-5 py-4">
+                <div class="avater mb-3">
+                    {% if profile.avater_image %}
+                    <img src="{{ profile.avater_image.url }}" alt="" class="card-img-top rounded-circle">
+                    {% else %}
+                    <img src="{% static 'images/avater_dummy.png' %}" alt="" class="card-img-top rounded-circle">
+                    {% endif %}
+                </div>
+                <h5 class="font-weight-bolder">{{ profile.name }}</h5>
+                <p class="mb-3 small text-center">{{ profile.title }}</p>
+
+                <div class="d-flex justify-content-around">
+                    <p>投稿</p>
+                    <p>フォロー</p>
+                    <p>フォロアー</p>
+                    {% if profile.web_site %}
+                        <a href="{{ profile.site_link }}" target="blank"><i class="fas fa-link btn-primary icon"></i></a>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+        <div class="col-md-12 px-5 py-4">
+                <h5 class="mb-3">ひとこと</h5>
+                <p>{{ profile.introduction|linebreaksbr}}</p>
+        </div>
+    </div>
+</div>
+
+{% endblock main %}

@@ -1,0 +1,119 @@
+/* 全体設定 */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    background: #f1f1f1;
+    display: flex;
+    flex-flow: column;
+    min-height: 100vh;
+}
+
+main {
+    flex: 1;
+}
+
+.text-right {
+    text-align: right;
+}
+
+/* ナビゲーション */
+.navbar-nav {
+    flex-direction: row!important;
+}
+
+.nav-color {
+    color:rgba(255,255,255,.55);
+}
+
+.nav-color-hover {
+    color: #FFF;
+}
+
+.nav-color:after {
+    content: '';
+    display: block;
+    height: 2px;
+    background: #EE6C4D;
+    margin-top: 6px;
+    opacity: 0;
+    transform: translateY(12px);
+    transition: all 0.3s ease-in-out;
+}
+
+.nav-color:hover:after {
+    transform: translateY(0px);
+    opacity: 1;
+}
+
+
+/* カスタムフォーム */
+.custom-form {
+    display: block;
+    font-size: 14px;
+    font-family: Roboto,sans-serif;
+    }
+
+.form-auth {
+    max-width: 400px;
+}
+
+.form-profile {
+    max-width: 100%;
+}
+
+.custom-form label {
+    margin-bottom: 0;
+    }
+
+.custom-form input[type='text'], input[type='password'], input, textarea {
+    font: 15px/24px sans-serif;
+    box-sizing: border-box;
+    width: 100%;
+    padding: 0.3em;
+    transition: 0.3s;
+    letter-spacing: 1px;
+    color: #606060;
+    border-radius: 0.25rem;
+    }
+
+.error-text {
+    color: #ff0000;
+    font-size: 12px;
+    padding: 1px 0 5px 0;
+    }
+
+.text-div {
+    padding: 12px;
+    }
+
+.error-text ul {
+    list-style-type: none;
+    padding: 0;
+    margin-bottom: 0;
+    }
+
+.alert-text {
+    font-size: 14px;
+    }
+
+.form-button {
+    margin-top: 10px;
+    }
+
+.logout-content {
+    text-align: center;
+}
+
+/* プロフィール */
+.avater img {
+    max-width: 150px;
+    max-height: 150px;
+}
+
+.icon {
+    padding: 10px 8px;
+}

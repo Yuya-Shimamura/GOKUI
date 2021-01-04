@@ -1,0 +1,20 @@
+{% extends "base.html" %}
+
+{% block title %} - ログイン {% endblock title %}
+{% block main %}
+
+        <div class="row justify-content-center mt-5">
+            <div class="col-lg-4 col-md-6 col-sm-8">
+                <div class="card">
+                    <div class="card-body">
+                        <h3 class="card-title">ログイン</h3>
+                        {% include "registration/_form.html" with submit_label="ログイン" %}
+                    </div>
+                    <div class="card-footer text-muted text-center">
+                        <a href="{% url 'signup' %}">新規登録はこちら</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+{% endblock main %}

@@ -30,12 +30,20 @@ ALLOWED_HOSTS = ['*']
 # Application definition
 
 INSTALLED_APPS = [
+    'accounts',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'django.contrib.sites',
+    'allauth',
+    'allauth.account',
+    'allauth.socialaccount',
+    'widget_tweaks',
+    'main_app',
+    'user_profile',
 ]
 
 MIDDLEWARE = [
@@ -53,7 +61,7 @@ ROOT_URLCONF = 'config.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': ['templates'],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -118,8 +126,27 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 
+# 本番環境用
+# STATIC_ROOT = os.path.join(BASE_DIR / 'staticfiles')
+# STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
+STATICFILES_DIRS = [BASE_DIR / 'static/']
 
+MEDIA_URL = '/media/'
+MEDIA_ROOT = str(BASE_DIR / 'media')
+
+SITE_ID = 1
+LOGIN_URL = '/login/'
+LOGIN_REDIRECT_URL = '/'
+LOGOUT_REDIRECT_URL = '/'
+ACCOUNT_LOGOUT_REDIRECT_URL = '/'
+ACCOUNT_EMAIL_VERIFICATION = 'none'
+
+NUMBER_GROUPING = 3
+
+AUTH_USER_MODEL = 'accounts.User'
+
+FRONTEND_URL = 'http://127.0.0.1:8000/'
 
 
 DEBUG = False
