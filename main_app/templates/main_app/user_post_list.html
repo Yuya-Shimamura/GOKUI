@@ -3,9 +3,13 @@
 {% block main %}
 
 <div class="text-center my-5">
+    {% for post in posts %}
+    {% if forloop.first %}      
     <div class="mb-5">
-        <h1>最新の投稿</h1>
+        <h1>{{ post.user.username }}さんの投稿一覧</h1>
     </div>
+    {% endif %}
+    {% endfor %}
     <div class="row">
         {% for post in posts %}
         <div class="col-sm-6 mb-3">

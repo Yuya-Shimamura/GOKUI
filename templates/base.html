@@ -23,6 +23,9 @@
                     <a href="{% url 'profile' user.pk %}" class="nav-link nav-color">マイページ</a>
                 </li>
                 <li class="nav-item ">
+                    <a href="{% url 'post_create' %}" class="nav-link nav-color">新規投稿</a>
+                </li>
+                <li class="nav-item ">
                     <a href="{% url 'logout' %}" class="nav-link nav-color">ログアウト</a>
                 </li>
                 {% else %}

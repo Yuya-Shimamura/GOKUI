@@ -8,7 +8,9 @@
 <div class="mb-5">
     <div class="card row">
         <div class="col-md-12">
+            {% if request.user.id == profile.user.id %}
             <p class="my-3 mx-5 text-right"><a href="{% url 'profile_edit' user.pk %}" class="btn btn-primary">プロフィールを編集</a></p>
+            {% endif %}
             <div class="text-center px-5 py-4">
                 <div class="avater mb-3">
                     {% if profile.avater_image %}
@@ -17,11 +19,11 @@
                     <img src="{% static 'images/avater_dummy.png' %}" alt="" class="card-img-top rounded-circle">
                     {% endif %}
                 </div>
-                <h5 class="font-weight-bolder">{{ profile.name }}</h5>
+                <h3 class="font-weight-bolder mb-3">{{ profile.user.username }}</h3>
                 <p class="mb-3 small text-center">{{ profile.title }}</p>
 
                 <div class="d-flex justify-content-around">
-                    <p>投稿</p>
+                    <a href="{% url 'user_post_list' profile.user.id %}">投稿</a>
                     <p>フォロー</p>
                     <p>フォロアー</p>
                     {% if profile.web_site %}

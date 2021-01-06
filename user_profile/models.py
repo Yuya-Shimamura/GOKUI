@@ -6,8 +6,8 @@ from accounts.models import User
 
 # Create your models here.
 class Profile(models.Model):
-    user = models.OneToOneField(User, on_delete=models.CASCADE, related_name='profile')
-    title = models.CharField('肩書き', max_length=20, blank=True, null=True)
+    user = models.OneToOneField(User, on_delete=models.CASCADE, verbose_name='ユーザー', related_name='profile')
+    title = models.CharField('タイトル', max_length=20, blank=True, null=True)
     introduction = models.TextField('自己紹介', max_length=120, blank=True, null=True)
     site_link = models.CharField('ウェブサイト', max_length=100, blank=True, null=True)
     avater_image = models.ImageField(upload_to='images', verbose_name='プロフィール画像', blank=True, null=True)

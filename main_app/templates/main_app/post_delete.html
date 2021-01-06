@@ -1,0 +1,20 @@
+{% extends "base.html" %}
+{% block title %} - 投稿削除 {% endblock title %}
+
+{% block main %}
+
+<div class="row justify-content-center mt-5">
+    <div class="col-lg-4 col-md-6 col-sm-8">
+        <div class="card">
+            <div class="card-body">
+                <p class="card-title text-center">この操作は取り消せません。本当に削除しますか？</p>
+                <form method="post" class="auth-form">{% csrf_token %}
+                    <button type="submit" class="btn btn-lg btn-warning btn-block mx-auto my-3 button d-block">削除
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock main %}

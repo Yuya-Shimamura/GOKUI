@@ -1,0 +1,67 @@
+{% extends "base.html" %}
+
+{% block title %} - 投稿編集 {% endblock title %}
+{% block main %}
+
+        <div class="row justify-content-center mt-5">
+            <div class="col-sm-8">
+                <div class="card">
+                    <div class="card-body">
+                        {% csrf_token %}
+                            <form method="post" novalidate class="custom-form form-profile" enctype="multipart/form-data">
+                                {% csrf_token %}
+                                {% for field in form %}
+                                {% if forloop.first %}
+                                <div>
+                                    {{ field.label_tag }}
+                                    <div class="d-sm-flex justify-content-between">
+                                        <p class="col-lg-9">{{ field }}</p>
+                                        <h5 class="col-lg-2 mt-1">の極意</h5>
+                                    </div>
+                                    {% if field.errors %}
+                                        <div class="error-text">
+                                            {{ field.errors }}
+                                        </div>
+                                    {% else %}
+                                        <div class="text-div"></div>
+                                    {% endif %}
+                                </div>
+                                {% elif field == form.tags %}
+                                <div>
+                                    {{ field.label_tag }}
+                                    <span class="text-danger">{{ field.help_text }}</span>
+                                    {{ field }}
+                                    {% if field.errors %}
+                                    <div class="error-text">
+                                        {{ field.errors }}
+                                    </div>
+                                    {% else %}
+                                    <div class="text-div"></div>
+                                    {% endif %}
+                                </div>
+                                {% else %}
+                                <div>
+                                    {{ field.label_tag }}
+                                    {{ field }}
+                                    {% if field.errors %}
+                                    <div class="error-text">
+                                        {{ field.errors }}
+                                    </div>
+                                    {% else %}
+                                    <div class="text-div"></div>
+                                    {% endif %}
+                                </div>
+                                {% endif %}
+                                {% endfor %}
+                                <input type="submit" value="投稿" class="form-control btn-primary form-button" />
+                                <input type="hidden" name="next" value="{{ next }}" />
+                            </form>
+                    </div>
+                    <div class="card-footer text-muted text-center">
+                        <a href="{% url 'profile' user.pk %}">投稿せずに戻る</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+{% endblock main %}

@@ -2,9 +2,18 @@ from django.shortcuts import render, redirect
 from django.urls import reverse_lazy
 from django.views.generic import TemplateView, ListView, DetailView, CreateView, UpdateView, DeleteView
 from .models import Profile
-from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 
 from .forms import ProfileEditForm
+
+
+
+class OnlyYouMixin(UserPassesTestMixin):
+    raise_exception = True
+
+    def test_func(self):
+        user = self.request.user
+        return user.pk == self.kwargs['pk'] or user.is_superuser
 
 class ProfileView(LoginRequiredMixin, TemplateView):
 
@@ -15,7 +24,7 @@ class ProfileView(LoginRequiredMixin, TemplateView):
             'profile': profile,
         })
 
-class ProfileEditView(LoginRequiredMixin, UpdateView):
+class ProfileEditView(LoginRequiredMixin, OnlyYouMixin, UpdateView):
     model = Profile
     form_class = ProfileEditForm
     template_name = "user_profile/profile_edit.html"

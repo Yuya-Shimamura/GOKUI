@@ -20,6 +20,10 @@ main {
     text-align: right;
 }
 
+.text-left {
+    text-align: left;
+}
+
 /* ナビゲーション */
 .navbar-nav {
     flex-direction: row!important;
@@ -116,4 +120,10 @@ main {
 
 .icon {
     padding: 10px 8px;
+}
+
+/* トップ画面 */
+.top-avater img {
+    max-width: 120px;
+    max-height: 120px;
 }
