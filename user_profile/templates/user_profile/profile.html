@@ -23,7 +23,7 @@
                 <p class="mb-3 small text-center">{{ profile.title }}</p>
 
                 <div class="d-flex justify-content-around">
-                    <a href="{% url 'user_post_list' profile.user.id %}">投稿</a>
+                    <a href="{% url 'user_post_list' profile.user.id %}">投稿({{ profile.user.post.count }}件)</a>
                     <p>フォロー</p>
                     <p>フォロアー</p>
                     {% if profile.web_site %}

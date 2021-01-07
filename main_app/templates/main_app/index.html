@@ -2,36 +2,60 @@
 {% load static %}
 {% block main %}
 
-<div class="text-center my-5">
-    <div class="mb-5">
-        <h1>最新の投稿</h1>
-    </div>
-    <div class="row">
-        {% for post in posts %}
-        <div class="col-sm-6 mb-3">
-            <div class="card px-3 py-4">
-                <p class="text-right mb-0">{{ post.created_at|date:"Y/m/d H:i" }}</p>
-                <p class="text-right mb-0">{{ post.views }} Views</p>
-                <div class="top-avater mb-3">
-                    {% if post.user.profile.avater_image %}
-                    <img src="{{ post.user.profile.avater_image.url }}" alt="" class="card-img-top rounded-circle">
-                    {% else %}
-                    <img src="{% static 'images/avater_dummy.png' %}" alt="" class="card-img-top rounded-circle">
-                    {% endif %}
-                </div>
-                <h5 class="font-weight-bolder mb-3">{{ post.title }}の極意</h5>
-                <p>by {{post.user.username}}</p>
-                <hr>
-                <p>
-                    {% for tag in post.tags.all %}
-                    <a class="text-left pr-1 btn-info">#{{ tag.name }}</a>
-                    {% endfor %}
-                </p>
-                <p class=" text-right"><i class="fas fa-heart text-danger"></i> 0</p>
-                <a href="{% url 'post_detail' post.pk %}" class="stretched-link"></a>
+{% if keyword %}
+<div class="mb-5 text-center">
+    <h1>"{{ keyword }}"の検索結果</h1>
+</div>
+{% elif tag %}
+<div class="mb-5 text-center">
+    <h1>"{{ tag }}"タグCを含む投稿</h1>
+</div>
+{% else %}
+<div class="mb-5 text-center">
+    <h1>最新の投稿</h1>
+</div>
+{% endif %}
+<div class="d-sm-flex">
+    <div class="py-4 col-sm-3">
+        <div class="card my-4 ">
+            <h5 class="card-header">検索</h5>
+            <div class="card-body text-center">
+                <form method="get" action="{% url 'post_search' %}" class="input-group">
+                    <input type="text" class="form-content" name="keyword" placeholder="タイトル、タグでを検索...">
+                    <button class="btn btn-warning" type="submit">検索</button>
+                </form>
             </div>
         </div>
-        {% endfor %}
+    </div>
+    <div class="col-sm-1"></div>
+    <div class="text-center my-5 col-sm-8">
+        <div class="row">
+            {% for post in posts %}
+            <div class="col-sm-6 mb-3">
+                <div class="card px-3 py-4">
+                    <p class="text-right mb-0">{{ post.created_at|date:"Y/m/d H:i" }}</p>
+                    <p class="text-right mb-0">{{ post.views }} Views</p>
+                    <div class="top-avater mb-3">
+                        {% if post.user.profile.avater_image %}
+                        <img src="{{ post.user.profile.avater_image.url }}" alt="" class="card-img-top rounded-circle">
+                        {% else %}
+                        <img src="{% static 'images/avater_dummy.png' %}" alt="" class="card-img-top rounded-circle">
+                        {% endif %}
+                    </div>
+                    <h5 class="font-weight-bolder mb-3">{{ post.title }}の極意</h5>
+                    <p>by {{post.user.username}}</p>
+                    <hr>
+                    <p>
+                        {% for tag in post.tags.all %}
+                        <a class="text-left pr-1 btn-info">#{{ tag.name }}</a>
+                        {% endfor %}
+                    </p>
+                    <p class=" text-right"><i class="fas fa-heart text-danger"></i> 0</p>
+                    <a href="{% url 'post_detail' post.pk %}" class="stretched-link"></a>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
     </div>
 </div>
 

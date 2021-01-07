@@ -6,6 +6,11 @@ from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from .models import Post
 from .forms import PostEditForm
 
+from django.db.models import Q
+from functools import reduce
+from operator import and_
+
+
 class OnlyYourPostMixin(UserPassesTestMixin):
     raise_exception = True
 
@@ -20,10 +25,45 @@ class IndexView(ListView):
     context_object_name = 'posts'
     paginated_by = 24
 
+class PostSearchView(TemplateView):
+    def get(self, request, *args, **kwargs):
+        posts = Post.objects.order_by('-id')
+        
+        keyword = request.GET.get('keyword')
+
+        if keyword:
+            exclusion_list = set([' ', '　'])
+            query_list = ''
+            for word in keyword:
+                if not word in exclusion_list:
+                    query_list += word
+            query = reduce(and_, [Q(title__icontains=q) | Q(tags__name__icontains=q) for q in query_list])
+            posts = posts.filter(query)
+
+        return render(request, 'main_app/index.html', {
+            'keyword': keyword,
+            'posts': posts,
+        })
+
+class PostTagListView(TemplateView):
+    def get(self, request, *args, **kwargs):
+        tag = self.kwargs['tag']
+        posts = Post.objects.order_by('-id').filter(tags__name__icontains=tag)
+        return render(request, 'main_app/index.html', {
+            'posts': posts,
+            'tag': tag,
+        })
+
 class PostDetailView(DetailView):
     model = Post
-    context_object_name = 'post'
-    template_name = "main_app/post_detail.html"
+
+    def get(self, request, *args, **kwargs):
+        post = Post.objects.get(id=self.kwargs['pk'])
+        post.views += 1
+        post.save()
+        return render(request, 'main_app/post_detail.html', {
+            'post': post,
+        })    
 
 class PostCreateView(LoginRequiredMixin, CreateView):
     model = Post
