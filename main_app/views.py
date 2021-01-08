@@ -1,14 +1,21 @@
-from django.shortcuts import render
+# import from django
+from django.shortcuts import render, redirect, get_object_or_404
 from django.views.generic import TemplateView, ListView, DetailView, CreateView, UpdateView, DeleteView
 from django.urls import reverse_lazy
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 
+# モデル、フォーム
 from .models import Post
 from .forms import PostEditForm
 
+# 検索機能
 from django.db.models import Q
 from functools import reduce
 from operator import and_
+
+# いいね機能
+from django.template.loader import render_to_string
+from django.http import JsonResponse
 
 
 class OnlyYourPostMixin(UserPassesTestMixin):
@@ -59,11 +66,37 @@ class PostDetailView(DetailView):
 
     def get(self, request, *args, **kwargs):
         post = Post.objects.get(id=self.kwargs['pk'])
+
+        liked = False
+        if post.like.filter(id=request.user.id).exists():
+            liked = True
+
         post.views += 1
         post.save()
         return render(request, 'main_app/post_detail.html', {
             'post': post,
-        })    
+            'liked': liked,
+        })
+        
+def like(request):
+    post = get_object_or_404(Post, id=request.POST.get('post_id'))
+    
+    liked = False
+    if post.like.filter(id=request.user.id).exists():
+            post.like.remove(request.user)
+            liked = False
+    else:
+        post.like.add(request.user)
+        liked = True
+
+    context = {
+        'post': post,
+        'liked': liked,
+    }
+    if request.is_ajax():
+        html = render_to_string('main_app/like.html', context, request=request)
+        return JsonResponse({'form': html})
+
 
 class PostCreateView(LoginRequiredMixin, CreateView):
     model = Post

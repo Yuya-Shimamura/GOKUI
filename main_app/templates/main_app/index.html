@@ -50,7 +50,11 @@
                         <a class="text-left pr-1 btn-info">#{{ tag.name }}</a>
                         {% endfor %}
                     </p>
-                    <p class=" text-right"><i class="fas fa-heart text-danger"></i> 0</p>
+                    {% if post.like.count != 0 %}
+                    <p class=" text-right"><i class="fas fa-heart text-danger"></i> {{post.like.count}}</p>
+                    {% else %}
+                    <p class=" text-right"><i class="far fa-heart"></i></p>
+                    {% endif %}
                     <a href="{% url 'post_detail' post.pk %}" class="stretched-link"></a>
                 </div>
             </div>

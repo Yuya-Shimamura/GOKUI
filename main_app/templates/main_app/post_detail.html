@@ -19,14 +19,31 @@
             <hr>
             <p>
                 {% for tag in post.tags.all %}
-                <a href="{% url 'post_tag_list' tag.name %}" class="pr-1 btn-info">#{{ tag.name }}</a>
+                    <a href="{% url 'post_tag_list' tag.name %}" class="pr-1 btn-info">#{{ tag.name }}</a>
                 {% endfor %}
             </p>
             <p>{{ post.content|linebreaksbr }}</p>
             {% if post.site_link and user.is_authenticated %}
-            <p class="text-right"><a href="{{ post.site_link }}">参考サイト</a></p>
+                <p class="text-right"><a href="{{ post.site_link }}">参考サイト</a></p>
             {% endif %}
-            <p class=" text-right"><i class="fas fa-heart text-danger"></i> 0</p>
+        <div class="d-flex justify-content-between">
+            <div class="d-flex">
+                <p class="mr-2 text-left">
+                    <a class="" href="https://twitter.com/share?url={{ request.scheme }}://{{ request.get_host }}{% url 'post_detail' post.pk %}&text={{ post.title }} - GOKUI" target="_blank" rel="nofollow">
+                    <i class="fab fa-lg fa-twitter text-info"></i>            
+                    </a>                
+                </p>
+                
+                <p class="px-2">
+                    <a class="" href="https://www.facebook.com/sharer/sharer.php?u={{ request.scheme }}://{{ request.get_host }}{% url 'post_detail' post.pk %}" target="_blank" rel="nofollow">
+                    <i class="fab fa-lg fa-facebook-square text-primary"></i>
+                    </a>
+                </p>
+            </div>
+            <div id="like">
+                {% include "main_app/like.html" %}
+            </div>
+        </div>
             <div class="d-sm-flex col-sm-4">
                 {% if request.user.id == post.user.id %}
                 <a class="btn btn-info text-white mx-2" href="{% url 'post_edit' post.pk %}">編集</a>

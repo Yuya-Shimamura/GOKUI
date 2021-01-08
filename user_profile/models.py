@@ -16,7 +16,7 @@ class Profile(models.Model):
         return self.user.username
 
     class Meta:
-        db_table = 'プロフィール'
+        db_table = 'Profile'
         verbose_name_plural = 'プロフィール'
 
 @receiver(post_save, sender=User)
