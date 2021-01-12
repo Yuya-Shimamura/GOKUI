@@ -1,5 +1,5 @@
 from django import forms
-from .models import Post
+from .models import Post, Comment
 
 class PostEditForm(forms.ModelForm):
     class Meta:
@@ -28,3 +28,13 @@ class PostEditForm(forms.ModelForm):
                 'size': 50}),
             'site_link': forms.TextInput(attrs={'placeholder': 'https://twitter.com/xxxxxxxxx'}),
         }
+
+class CommentForm(forms.ModelForm):
+    class Meta:
+        model = Comment
+        fields = ('text',)
+        labels = {'text': 'コメント'}
+        help_texts = {'text': 'コメントを100文字以内で入力してください'}
+        widgets = {'text': forms.Textarea(attrs={
+            'placeholder': 'コメントを100文字以内で入力してください',
+            'size': 50})}

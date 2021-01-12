@@ -14,26 +14,23 @@
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
         <div class="container">
             <a href="/" class="navbar-brand">GOKUI</a>
-            <ul class="navbar-nav ml-auto flex">
-                <li class="nav-item ">
-                    <a href="/" class="nav-link nav-color">ホーム</a>
-                </li>
+            <ul class="navbar-nav ml-auto d-flex justify-content-between">
                 {% if user.is_authenticated %}
-                <li class="nav-item ">
-                    <a href="{% url 'profile' user.pk %}" class="nav-link nav-color">マイページ</a>
+                <li class="nav-item">
+                    <a href="{% url 'profile' user.pk %}" class="nav-link nav-color">My Page</a>
                 </li>
                 <li class="nav-item ">
-                    <a href="{% url 'post_create' %}" class="nav-link nav-color">新規投稿</a>
+                    <a href="{% url 'post_create' %}" class="nav-link nav-color">New Post</a>
                 </li>
                 <li class="nav-item ">
-                    <a href="{% url 'logout' %}" class="nav-link nav-color">ログアウト</a>
+                    <a href="{% url 'logout' %}" class="nav-link nav-color">Logout</a>
                 </li>
                 {% else %}
                 <li class="nav-item ">
-                    <a href="{% url 'login' %}" class="nav-link nav-color">ログイン</a>
+                    <a href="{% url 'login' %}" class="nav-link nav-color">Login</a>
                 </li>
                 <li class="nav-item ">
-                    <a href="{% url 'signup' %}" class="nav-link nav-color">サインアップ</a>
+                    <a href="{% url 'signup' %}" class="nav-link nav-color">Signup</a>
                 </li>
                 {% endif %}
             </ul>
@@ -77,6 +74,49 @@
         });
     </script>
 
+    <script type="text/javascript">
+        $(document).ready(function(event){
+        $(document).on('click', '#favorite', function(event){
+            event.preventDefault();
+            var post_id = $(this).attr('value');
+            $.ajax({
+            type: 'POST',
+            url: '{% url "favorite" %}',
+            data: {'post_id': post_id, 'favorite_rest': '{{ favorite_rest }}', 'csrfmiddlewaretoken': '{{ csrf_token }}'},
+            dataType: 'json',
+            success: function(response){
+            $('#favorite').html(response['form'])
+            console.log($('#favorite').html(response['form']));
+            },
+            error: function(rs, e){
+            console.log(rs.responseText);
+            }
+            });
+        });
+        });
+    </script>
+
+    <!-- <script type="text/javascript">
+        $(document).ready(function(event){
+        $(document).on('click', '#follow', function(event){
+            event.preventDefault();
+            var profile_user = $(this).attr('value');
+            $.ajax({
+            type: 'POST',
+            url: '{% url "follow" %}',
+            data: {'profile_user': profile_user, 'follow_rest': '{{ follow_rest }}', 'csrfmiddlewaretoken': '{{ csrf_token }}'},
+            dataType: 'json',
+            success: function(response){
+            $('#follow').html(response['form'])
+            console.log($('#follow').html(response['form']));
+            },
+            error: function(rs, e){
+            console.log(rs.responseText);
+            }
+            });
+        });
+        });
+    </script> -->
 
     {% block extra_js %}
 

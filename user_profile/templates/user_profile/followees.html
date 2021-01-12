@@ -1,0 +1,39 @@
+{% extends "base.html" %}
+{% load static %}
+{% block main %}
+
+<div class="text-center my-5">
+    {% for followee in followees %}
+    {% if forloop.first %}      
+    <div class="mb-5">
+        <h1>{{ profile_user.username }}さんの師匠一覧</h1>
+    </div>
+    {% endif %}
+    {% endfor %}
+    <div class="row">
+        {% for followee in followees %}
+        <div class="col-sm-12 col-lg-4 mb-3 card ">
+            <div class="text-center px-5 py-4">
+                <div class="avater mb-3">
+                    {% if followee.profile.avater_image %}
+                    <img src="{{ followee.profile.avater_image.url }}" alt="" class="card-img-top rounded-circle">
+                    {% else %}
+                    <img src="{% static 'images/avater_dummy.png' %}" alt="" class="card-img-top rounded-circle">
+                    {% endif %}
+                </div>
+                <h3 class="font-weight-bolder mb-3">{{ followee.username }}</h3>
+                <p class="mb-3 small text-center">{{ followee.profile.title }}</p>
+
+                <div class="d-flex justify-content-around">
+                    <p>投稿({{ followee.post.count }}件)</p>
+                    <p>師匠({{ followee.followees.count }}人)</p>
+                    <p>弟子({{ followee.followers.count }}人)</p>
+                </div>
+                <a href="{% url 'profile' followee.pk %}" class="stretched-link"></a>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+
+{% endblock main %}

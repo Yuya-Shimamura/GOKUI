@@ -16,5 +16,5 @@ class LogoutView(views.LogoutView):
 
     # def post(self, request, *args, **kwargs):
     #     if self.request.user.is_authenticated:
-    #         self.logout()
+    #         self.request.user.logout()
     #     return redirect('/')

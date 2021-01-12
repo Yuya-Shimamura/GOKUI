@@ -31,8 +31,23 @@ class Manager(UserManager):
 class User(AbstractUser):
     username = models.CharField('ユーザー名', unique=True, max_length=20, blank=False)
     email = models.EmailField('メールアドレス', unique=True)
+    followees = models.ManyToManyField(
+        'User', verbose_name='フォロー中のユーザー', through='FriendShip',
+        related_name='+', blank=True, through_fields=('follower', 'followee')
+    )
+    followers = models.ManyToManyField(
+        'User', verbose_name='フォローされているユーザー', through='FriendShip', 
+        related_name='+', blank=True, through_fields=('followee', 'follower')
+    )
 
     objects = Manager()
 
     USERNAME_FIELD = 'email'
     REQUIRED_FIELDS = []
+
+class FriendShip(models.Model):
+    follower = models.ForeignKey('User', on_delete=models.SET_NULL, blank=True, null=True, related_name='followee_friendships')
+    followee = models.ForeignKey('User', on_delete=models.SET_NULL, blank=True, null=True, related_name='follower_friendships')
+
+    class Meta:
+        unique_together = ('follower', 'followee')

@@ -3,11 +3,11 @@
     <form action="{% url 'like' %}" method="POST">
         {% csrf_token %}
         {% if liked %}
-        <button type="submit" id="like" name="post_id" value="{{post.id}}" class="btn py-0 text-danger"><i class="fas fa-lg fa-heart like-red"></i></button>
+        <button type="submit" id="like" name="post_id" value="{{post.id}}" class="btn py-0 text-danger"><i class="fas fa-lg fa-thumbs-up text-primary"></i></button>
         {% else %}
-        <button type="submit" id="like" name="post_id" value="{{post.id}}" class="btn py-0"><i class="far fa-lg fa-heart"></i></button>      
+        <button type="submit" id="like" name="post_id" value="{{post.id}}" class="btn py-0"><i class="far fa-lg fa-thumbs-up"></i></button>      
         {% endif %}
     </form>
     {% endif %}
-    <p>{{post.like.count}}</p>
+    <p class="mb-0">{{post.like.count}}</p>
 </div>

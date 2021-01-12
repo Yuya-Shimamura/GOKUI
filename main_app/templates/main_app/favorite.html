@@ -1,0 +1,18 @@
+<div>
+    {% if request.user.is_authenticated %}
+    <form class="d-flex justify-content-start" action="{% url 'favorite' %}" method="POST">
+        {% csrf_token %}
+        {% if favored %}
+        <button type="submit" id="favorite" name="post_id" value="{{post.id}}" class="btn py-0 text-danger"><i class="fas fa-lg fa-heart text-danger"></i></button>
+        <p class="mb-0">お気に入りの投稿</p>
+        {% else %}
+        <button type="submit" id="favorite" name="post_id" value="{{post.id}}" class="btn py-0"><i class="far fa-lg fa-heart"></i></button>
+        {% if favorite_rest != 0 %}
+        <p class="mb-0">お気に入りに追加</p>
+        {% else %}
+        <p class="mb-0">これ以上追加できません</p>
+        {% endif %}
+        {% endif %}
+    </form>
+    {% endif %}
+</div>

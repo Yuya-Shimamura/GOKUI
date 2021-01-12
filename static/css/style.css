@@ -118,6 +118,7 @@ main {
     max-height: 150px;
 }
 
+
 .icon {
     padding: 10px 8px;
 }
@@ -126,4 +127,10 @@ main {
 .top-avater img {
     max-width: 120px;
     max-height: 120px;
+}
+
+/* 投稿詳細 */
+.avater-small img {
+    max-width: 80px;
+    max-height: 80px;
 }

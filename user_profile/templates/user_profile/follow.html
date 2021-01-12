@@ -1,0 +1,18 @@
+<div>
+    {% if request.user.is_authenticated and follow_status_code is 2 %}
+    <form class="d-flex justify-content-end" action="{% url 'follow' %}" method="POST">
+        {% csrf_token %}
+        {% if follow %}
+        <p class="mb-0 py-2">フォロー中</p>
+        <button type="submit" id="follow" name="profile_user" value="{{profile.user.id}}" class="btn py-2 px-2 text-info"><i class="fas fa-lg fa-user-plus"></i></button>
+        {% else %}
+        {% if follow_rest == 0 %}
+        <p class="mb-0 py-2">これ以上フォローできません</p>
+        {% else %}
+        <p class="mb-0 py-2">フォローする</p>
+        {% endif %}
+        <button type="submit" id="follow" name="profile_user" value="{{profile.user.id}}" class="btn py-2 px-2"><i class="fas fa-lg fa-user-plus"></i></button>
+        {% endif %}
+    </form>
+    {% endif %}
+</div>

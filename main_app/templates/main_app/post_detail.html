@@ -5,6 +5,9 @@
 <div class="text-center">
     <div class="row my-3">
         <div class="card px-3 py-4 col-sm-8 mx-auto">
+            <div class="text-left" id="favorite">
+                {% include "main_app/favorite.html" %}
+            </div>
             <p class="text-right mb-0">{{ post.created_at|date:"Y/m/d H:i" }}</p>
             <p class="text-right mb-0">{{ post.views }} Views</p>
             <div class="avater mb-3">
@@ -22,29 +25,32 @@
                     <a href="{% url 'post_tag_list' tag.name %}" class="pr-1 btn-info">#{{ tag.name }}</a>
                 {% endfor %}
             </p>
-            <p>{{ post.content|linebreaksbr }}</p>
+            <p class="text-left">{{ post.content|linebreaksbr }}</p>
             {% if post.site_link and user.is_authenticated %}
                 <p class="text-right"><a href="{{ post.site_link }}">参考サイト</a></p>
             {% endif %}
         <div class="d-flex justify-content-between">
             <div class="d-flex">
                 <p class="mr-2 text-left">
-                    <a class="" href="https://twitter.com/share?url={{ request.scheme }}://{{ request.get_host }}{% url 'post_detail' post.pk %}&text={{ post.title }} - GOKUI" target="_blank" rel="nofollow">
-                    <i class="fab fa-lg fa-twitter text-info"></i>            
+                    <a class="text-decoration-none text-dark" href="https://twitter.com/share?url={{ request.scheme }}://{{ request.get_host }}{% url 'post_detail' post.pk %}&text={{ post.title }} - GOKUI" target="_blank" rel="nofollow">
+                    <i class="fab fa-lg fa-twitter text-info"></i>           
                     </a>                
                 </p>
                 
-                <p class="px-2">
-                    <a class="" href="https://www.facebook.com/sharer/sharer.php?u={{ request.scheme }}://{{ request.get_host }}{% url 'post_detail' post.pk %}" target="_blank" rel="nofollow">
+                <p class="px-3">
+                    <a class="text-decoration-none text-dark" href="https://www.facebook.com/sharer/sharer.php?u={{ request.scheme }}://{{ request.get_host }}{% url 'post_detail' post.pk %}" target="_blank" rel="nofollow">
                     <i class="fab fa-lg fa-facebook-square text-primary"></i>
                     </a>
                 </p>
             </div>
-            <div id="like">
-                {% include "main_app/like.html" %}
+            <div class="d-flex justify-content-end">
+                <a class="pt-1" href="{% url 'comment_create' post.pk %}"><i class="far fa-lg fa-comment btn py-1"></i></a>
+                <div id="like" class="pl-3">
+                    {% include "main_app/like.html" %}
+                </div>
             </div>
         </div>
-            <div class="d-sm-flex col-sm-4">
+        <div class="d-sm-flex col-sm-4">
                 {% if request.user.id == post.user.id %}
                 <a class="btn btn-info text-white mx-2" href="{% url 'post_edit' post.pk %}">編集</a>
                 <a class="btn btn-danger" href="{% url 'post_delete' post.pk %}">削除</a>
@@ -52,6 +58,73 @@
             </div>
         </div>
     </div>
+    <h2 class="pt-4 pb-2">コメント一覧</h2>
+    {% if comment_list %}
+    {% for comment in comment_list %}
+    <div class="overflow-auto" style="height:450px;">
+    <div class="row my-3">
+        <div class="card px-3 py-4 col-sm-8 mx-auto mb-4">
+            <div class="box">
+                <div class="d-flex ">
+                    <div class="avater-small col-sm-4 px-2">
+                        {% if comment.author.profile.avater_image %}
+                            <img src="{{ comment.author.profile.avater_image.url }}" alt="" class="card-img-top rounded-circle">
+                        {% else %}
+                        <img src="{% static 'images/avater_dummy.png' %}" alt="" class="card-img-top rounded-circle">
+                        {% endif %}
+                        <p>{{ comment.author.username }}</p>
+                    </div>
+                    <p class="px-3">{{ comment.text|linebreaksbr }}</p>
+                </div>
+                <hr>
+                <div class="d-flex justify-content-between">
+                    {% if comment.author == request.user %}
+                    <div class="text-left">
+                    <a class="btn btn-sm btn-danger" href="{% url 'comment_delete' comment.pk %}">削除</a>
+                    </div>
+                    {% endif %}
+                    <div class="text-right pt-1">
+                    <a href="{% url 'reply_create' comment.pk %}"><i class="far fa-lg fa-comment btn py-1"></i></a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% with reply_list=comment.comment_set.all %}
+        {% for reply in reply_list %}
+        <div class="card px-3 py-4 col-sm-8 mx-auto">
+            <div class="box">
+                <div class="d-flex">
+                    <div class="avater-small col-sm-4 px-2">
+                        {% if reply.author.profile.avater_image %}
+                            <img src="{{ reply.author.profile.avater_image.url }}" alt="" class="card-img-top rounded-circle">
+                            {% else %}
+                            <img src="{% static 'images/avater_dummy.png' %}" alt="" class="card-img-top rounded-circle">
+                            {% endif %}
+                        <p>{{ reply.author.username }}</p>
+                    </div>
+                    <p class="px-3">{{ reply.text|linebreaksbr }}</p>
+                </div>
+                <hr>
+                <div class="d-flex justify-content-between">
+                    {% if reply.author == request.user %}
+                    <div class="text-left">
+                    <a href="{% url 'comment_delete' reply.pk %}" class="btn btn-sm btn-danger">削除</a>
+                    </div>
+                    {% endif %}
+                    <div class="text-right pt-1">
+                    <a href="{% url 'reply_create' reply.pk %}"><i class="far fa-lg fa-comment btn py-1"></i></a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+        {% endwith %}
+    </div>
+    {% endfor %}
+    </div>
+    {% else %}
+    <p class="pt-3">まだコメントはありません</p>
+    {% endif %}
 </div>
 
 {% endblock main %}
